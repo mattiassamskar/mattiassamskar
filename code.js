@@ -26,7 +26,7 @@ function animate() {
 
 function initStars() {
     for (i = -1000; i < 1000; i += 50) {
-        var starMesh = createStarMesh();
+        var starMesh = createStarMesh(i);
         stars.push(starMesh);
         scene.add(starMesh);
     }
@@ -37,21 +37,21 @@ function animateStars() {
         var starMesh = stars[i];
         starMesh.position.z += 15;
         if (starMesh.position.z > 1000) {
-            setStartPosition(starMesh);
+            setStartPosition(starMesh, -1000);
         }
     }
 }
 
-function createStarMesh() {
+function createStarMesh(z) {
     var starGeometry = new THREE.CircleGeometry(3);
     var starMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
     var starMesh = new THREE.Mesh(starGeometry, starMaterial);
-    setStartPosition(starMesh);
+    setStartPosition(starMesh, z);
     return starMesh;
 }
 
-function setStartPosition(mesh) {
+function setStartPosition(mesh, z) {
     mesh.position.x = Math.random() * 2000 - 1000;
     mesh.position.y = Math.random() * 1000 - 500;
-    mesh.position.z = -1000;    
+    mesh.position.z = z;    
 }
