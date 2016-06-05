@@ -10,8 +10,9 @@ function init() {
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
-    
+
     initStars();
+    initImage();
     camera.position.z = 1000;
 }
 
@@ -29,8 +30,16 @@ function initStars() {
     }
 }
 
+function initImage() {
+    var map = new THREE.TextureLoader().load("mattias.png");
+    var material = new THREE.SpriteMaterial({ map: map });
+    var mesh = new THREE.Sprite(material);
+    mesh.position.set(0, 0, 996);
+    scene.add(mesh);
+}
+
 function animateStars() {
-    for (i = 0; i < stars.length; i++){
+    for (i = 0; i < stars.length; i++) {
         var starMesh = stars[i];
         starMesh.position.z += 15;
         if (starMesh.position.z > 1000) {
@@ -50,5 +59,5 @@ function createStarMesh(z) {
 function setStartPosition(mesh, z) {
     mesh.position.x = Math.random() * 2000 - 1000;
     mesh.position.y = Math.random() * 1000 - 500;
-    mesh.position.z = z;    
+    mesh.position.z = z;
 }
