@@ -20,37 +20,30 @@ function init() {
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-
     document.body.appendChild(renderer.domElement);
-
 }
 
 function initBox() {
-    boxGeometry = new THREE.BoxGeometry(400, 400, 400);
+    boxGeometry = new THREE.BoxGeometry(300, 300, 300);
     boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-
     boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
 }
 
 function initStars() {
-    for (i = 0; i < 100; i++) {
+    for (i = -1000; i < 1000; i += 50) {
         var starGeometry = new THREE.CircleGeometry(3);
         var starMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
         var starMesh = new THREE.Mesh(starGeometry, starMaterial);
-        starMesh.position.x = getStartXPosition();
-        starMesh.position.y = getStartYPosition();
+
+        starMesh.position.x = Math.random() * 2000 - 1000;
+        starMesh.position.y = Math.random() * 1000 - 500;
+        starMesh.position.z = i;
+
         stars.push(starMesh);
         scene.add(starMesh);
     }
 }
 
-function getStartXPosition() {
-    return window.innerWidth ;
-}
-
-function getStartYPosition() {
-  return Math.random() * window.innerHeight;
-}
 
 function animate() {
     requestAnimationFrame(animate);
@@ -69,10 +62,13 @@ function animateBox() {
 }
 
 function animateStars() {
-    for (i = 0; i < 100; i++){
-        stars[i].position.x--;
-        if (stars[i].position.x == 0){
-            stars[i].position.x = getStartXPosition();
+    for (i = 0; i < stars.length; i++){
+        var starMesh = stars[i];
+        starMesh.position.z += 15;
+        if (starMesh.position.z > 1000) {
+            starMesh.position.x = Math.random() * 2000 - 1000;
+            starMesh.position.y = Math.random() * 1000 - 500;
+            starMesh.position.z = -1000;
         }
     }
 }
