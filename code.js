@@ -6,10 +6,12 @@ animate();
 
 function init() {
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+
+    window.addEventListener('resize', callback, false);
 
     initStars();
     initImage();
@@ -23,7 +25,7 @@ function animate() {
 }
 
 function initStars() {
-    for (i = -1000; i < 1000; i += 30) {
+    for (i = -2000; i < 1000; i += 20) {
         var starMesh = createStarMesh(i);
         stars.push(starMesh);
         scene.add(starMesh);
@@ -43,7 +45,7 @@ function animateStars() {
         var starMesh = stars[i];
         starMesh.position.z += 15;
         if (starMesh.position.z > 1000) {
-            setStartPosition(starMesh, -1000);
+            setStartPosition(starMesh, -2000);
         }
     }
 }
@@ -57,7 +59,17 @@ function createStarMesh(z) {
 }
 
 function setStartPosition(mesh, z) {
-    mesh.position.x = Math.random() * 2000 - 1000;
-    mesh.position.y = Math.random() * 1000 - 500;
+
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+
+    mesh.position.x = 3 * (Math.random() * width - width / 2);
+    mesh.position.y = 3 * (Math.random() * height - height / 2);
     mesh.position.z = z;
+}
+
+function callback() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
 }
