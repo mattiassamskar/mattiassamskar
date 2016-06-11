@@ -3,3 +3,10 @@ body {
     margin: 0px;
     overflow: hidden;
 }
+
+.text {
+    color: white;
+    margin-left: 50px;
+    margin-top: 20px;
+    position: absolute;
+}
