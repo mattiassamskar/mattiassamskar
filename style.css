@@ -2,11 +2,13 @@ body {
     background-color: #000000;
     margin: 0px;
     overflow: hidden;
+    font-family: 'Press Start 2P', cursive;
 }
 
-.text {
+.header {
     color: white;
-    margin-left: 50px;
+    margin-left: 30px;
     margin-top: 20px;
     position: absolute;
+    font-size: 48;
 }
