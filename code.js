@@ -1,5 +1,6 @@
 var scene, camera, renderer;
 var stars = [];
+var box;
 
 init();
 animate();
@@ -14,21 +15,24 @@ function init() {
     window.addEventListener('resize', callback, false);
 
     initStars();
-    initImage();
+    // initImage();
+    initBox();
     camera.position.z = 1000;
 }
 
 function animate() {
     requestAnimationFrame(animate);
     animateStars();
+    animateBox();
     renderer.render(scene, camera);
 }
 
 function initStars() {
     for (i = -2000; i < 1000; i += 20) {
-        var starMesh = createStarMesh(i);
-        stars.push(starMesh);
-        scene.add(starMesh);
+        var star = createStarMesh(i);
+        setMeshStartPosition(star, i);
+        stars.push(star);
+        scene.add(star);
     }
 }
 
@@ -40,26 +44,39 @@ function initImage() {
     scene.add(mesh);
 }
 
+function initBox() {
+    var geometry = new THREE.BoxGeometry(100, 100, 100);
+    var map = new THREE.TextureLoader().load("mattias.png");
+    var material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: map });
+    box = new THREE.Mesh(geometry, material);
+    box.position.set(0, 0, 700);
+    scene.add(box);
+}
+
 function animateStars() {
     for (i = 0; i < stars.length; i++) {
-        var starMesh = stars[i];
-        starMesh.position.z += 15;
-        if (starMesh.position.z > 1000) {
-            setStartPosition(starMesh, -2000);
+        var star = stars[i];
+        star.position.z += 15;
+        if (star.position.z > 1000) {
+            setMeshStartPosition(star, -2000);
         }
     }
 }
 
-function createStarMesh(z) {
-    var starGeometry = new THREE.CircleGeometry(3);
-    var starMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc });
-    var starMesh = new THREE.Mesh(starGeometry, starMaterial);
-    setStartPosition(starMesh, z);
-    return starMesh;
+function animateBox() {
+    box.rotation.x += 0.02;
+    box.rotation.y += 0.01;
+    box.rotation.z += 0.03;
 }
 
-function setStartPosition(mesh, z) {
+function createStarMesh() {
+    var geometry = new THREE.CircleGeometry(3);
+    var material = new THREE.MeshBasicMaterial({ color: 0xcccccc });
+    var mesh = new THREE.Mesh(geometry, material);
+    return mesh;
+}
 
+function setMeshStartPosition(mesh, z) {
     var width = window.innerWidth;
     var height = window.innerHeight;
 
