@@ -2,6 +2,7 @@ var scene, camera, renderer;
 var stars = [], box, earth;
 var time = 0;
 
+
 init();
 animate();
 
@@ -14,6 +15,7 @@ function init() {
     document.body.appendChild(renderer.domElement);
 
     window.addEventListener('resize', callback, false);
+    document.addEventListener('mousedown', onDocumentMouseDown, false );
 
     initStars();
     initBox();
@@ -91,4 +93,16 @@ function callback() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+}
+
+function onDocumentMouseDown(event) {
+            var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,   //x
+                                        -( event.clientY / window.innerHeight ) * 2 + 1,  //y
+                                        0.5 );                                            //z
+        var raycaster = projector.pickingRay( mouse3D.clone(), camera );
+        var intersects = raycaster.intersectObjects( objects );
+        // Change color if hit block
+        if ( intersects.length > 0 ) {
+            intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+        }
 }
