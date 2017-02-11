@@ -1,4 +1,4 @@
-var scene, camera, renderer;
+var scene, camera, renderer, projector;
 var stars = [], box, earth;
 var time = 0;
 
@@ -12,10 +12,12 @@ function init() {
     camera.position.z = 1000;
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
     document.body.appendChild(renderer.domElement);
 
     window.addEventListener('resize', callback, false);
-    document.addEventListener('mousedown', onDocumentMouseDown, false );
+    document.addEventListener('mousedown', onDocumentMouseDown, false);
 
     initStars();
     initBox();
@@ -52,7 +54,7 @@ function initBox() {
 
 function initEarth() {
     var geometry = new THREE.SphereGeometry(30, 32, 32);
-    var map = new THREE.TextureLoader().load("earth.jpg");
+    var map = new THREE.TextureLoader().load("linkedin.png");
     var material = new THREE.MeshBasicMaterial({ color: 0xcccccc, map: map });
     earth = new THREE.Mesh(geometry, material);
     scene.add(earth);
@@ -76,7 +78,7 @@ function animateBox() {
 function animateEarth() {
     time = time + 10;
     var e_angle = time * 0.001;
-    earth.rotation.y += 0.01;
+    earth.rotation.y += 0.03;
     earth.position.set(0.7 * window.innerWidth * Math.cos(e_angle) / 2, 0.7 * window.innerHeight * Math.sin(e_angle) / 2, 0);
 }
 
@@ -96,13 +98,12 @@ function callback() {
 }
 
 function onDocumentMouseDown(event) {
-            var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,   //x
-                                        -( event.clientY / window.innerHeight ) * 2 + 1,  //y
-                                        0.5 );                                            //z
-        var raycaster = projector.pickingRay( mouse3D.clone(), camera );
-        var intersects = raycaster.intersectObjects( objects );
-        // Change color if hit block
-        if ( intersects.length > 0 ) {
-            intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
-        }
+    event.preventDefault();
+    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    var intersects = raycaster.intersectObjects([earth]);
+    if (intersects.length > 0) {
+        window.open('https://se.linkedin.com/in/mattiassamskar');
+    }
 }
