@@ -18,6 +18,7 @@ function init() {
 
     window.addEventListener('resize', callback, false);
     document.addEventListener('mousedown', onDocumentMouseDown, false);
+    document.addEventListener('touchstart', onDocumentTouchStart, false);
 
     initStars();
     initBox();
@@ -95,6 +96,14 @@ function callback() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+}
+
+
+function onDocumentTouchStart(event) {
+    event.preventDefault();
+    event.clientX = event.touches[0].clientX;
+    event.clientY = event.touches[0].clientY;
+    onDocumentMouseDown(event);
 }
 
 function onDocumentMouseDown(event) {
