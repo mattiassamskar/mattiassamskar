@@ -6,42 +6,42 @@ var planets = [
     {
         image: 'linkedin.png',
         url: 'https://se.linkedin.com/in/mattiassamskar',
-        distance: 0.3,
+        distance: 500,
         speed: 0.007,
         size: 23,
-        tilt: -0.10
+        tilt: -1
     },
     {
         image: 'github.jpg',
         url: 'https://github.com/mattiassamskar',
-        distance: 0.18,
-        speed: 0.006,
+        distance: 360,
+        speed: 0.008,
         size: 25,
-        tilt: 0.06
+        tilt: 1
     },
     {
         image: 'twitter.jpg',
         url: 'https://twitter.com/mattiassamskar',
-        distance: 0.27,
+        distance: 420,
         speed: 0.009,
         size: 20,
-        tilt: -0.15
+        tilt: -1
     },
     {
         image: 'facebook.png',
         url: 'https://facebook.com/mattias.samskar',
-        distance: 0.33,
+        distance: 400,
         speed: 0.011,
         size: 15,
-        tilt: 0.0001
+        tilt: 1
     },
     {
         image: 'instagram.jpg',
         url: 'https://www.instagram.com/mattiassamskar/',
-        distance: 0.13,
+        distance: 260,
         speed: 0.015,
         size: 16,
-        tilt: 0.13
+        tilt: -1
     },
 ];
 
@@ -73,7 +73,7 @@ function initPlanets() {
         var material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: map });
         planet.mesh = new THREE.Mesh(geometry, material);
         planet.mesh.userData = planet.url;
-        planet.e_angle = Math.random() * 10;
+        planet.angle = Math.random() * 10;
         scene.add(planet.mesh);
     });
 }
@@ -103,14 +103,13 @@ function animateBox() {
 }
 
 function animatePlanets() {
-    var windowSize = Math.min(window.innerWidth, window.innerHeight);
     planets.forEach(function (planet) {
-        var x = planet.distance * windowSize * Math.cos(planet.e_angle);
-        var y = planet.tilt * windowSize * Math.sin(planet.e_angle);
-        var z = planet.distance * 2 * windowSize * Math.sin(planet.e_angle);
+        var x = planet.distance * Math.cos(planet.angle * planet.tilt);
+        var y = planet.distance * Math.sin(planet.angle * planet.tilt) / 3;
+        var z = planet.distance * Math.sin(planet.angle);
         planet.mesh.position.set(x, y, z);
         planet.mesh.rotation.y += planet.speed;
-        planet.e_angle += planet.speed;
+        planet.angle += planet.speed;
     });
 }
 
