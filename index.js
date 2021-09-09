@@ -7,7 +7,8 @@ var box;
 var stars = [];
 var planets = [
   {
-    image: "./img/linkedin.png",
+    image:
+      "https://res.cloudinary.com/dopyq5kvf/image/upload/w_200/v1631173838/linkedin_b9oocv.jpg",
     url: "https://se.linkedin.com/in/mattiassamskar",
     distance: 500,
     speed: 0.007,
@@ -17,7 +18,8 @@ var planets = [
     mesh: null,
   },
   {
-    image: "./img/github.jpg",
+    image:
+      "https://res.cloudinary.com/dopyq5kvf/image/upload/w_200/v1631173838/github_hhlxep.jpg",
     url: "https://github.com/mattiassamskar",
     distance: 360,
     speed: 0.008,
@@ -27,7 +29,8 @@ var planets = [
     mesh: null,
   },
   {
-    image: "./img/mail.jpg",
+    image:
+      "https://res.cloudinary.com/dopyq5kvf/image/upload/w_200/v1631173838/mail_vwz7sb.jpg",
     url: "mailto:mattias.samskar@gmail.com",
     distance: 400,
     speed: 0.011,
@@ -51,7 +54,9 @@ var initStars = function () {
 
 var initBox = function () {
   var geometry = new THREE.BoxGeometry(60, 60, 60);
-  var map = new THREE.TextureLoader().load("./img/mattias.jpg");
+  var map = new THREE.TextureLoader().load(
+    "https://res.cloudinary.com/dopyq5kvf/image/upload/w_200/v1631173838/mattias_voluol.jpg"
+  );
   var material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: map });
   box = new THREE.Mesh(geometry, material);
   box.position.set(0, 0, 0);
