@@ -31,9 +31,9 @@ const getStars = () => {
 };
 
 const getEnemies = (): Enemy[] => {
-  return ["twitter.svg", "github.svg", "youtube.svg", "gmail.svg"].map(
+  return ["github.svg", "gmail.svg", "linkedin.svg", "youtube.svg"].map(
     (name) => {
-      const image = new Image(98, 83);
+      const image = new Image();
       image.src = name;
 
       return {
@@ -90,7 +90,7 @@ const moveText = (context: CanvasRenderingContext2D, message: Message) => {
 };
 
 const moveEnemy = (context: CanvasRenderingContext2D, enemy: Enemy) => {
-  context.drawImage(enemy.image, enemy.x, enemy.y, 98 * 0.8, 83 * 0.8);
+  context.drawImage(enemy.image, enemy.x, enemy.y, 49 * 1.5, 42 * 1.5);
   enemy.timeout--;
   if (enemy.timeout > 0) return;
 
