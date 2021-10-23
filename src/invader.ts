@@ -50,7 +50,7 @@ export class Invader {
         ? "right"
         : this.right > xMax
         ? "left"
-        : randomInt(0, 100) > 90
+        : randomInt(0, 100) > 97
         ? this.toggleXDirection()
         : this.xDirection;
 

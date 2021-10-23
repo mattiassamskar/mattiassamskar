@@ -1,8 +1,7 @@
 import { Invader } from "./invader";
-import { Cannon, Color, Enemy, Message, Shot, Star } from "./types";
-
-const randomInt = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+import { Star } from "./star";
+import { Cannon, Message, Shot } from "./types";
+import { randomInt } from "./utils";
 
 const getMessage = (): Message => ({
   text: "Welcome to my version of Space Invaders - click or tap screen to fire",
@@ -33,58 +32,6 @@ const getCannon = (bottomMargin: number): Cannon => {
     direction: "right",
     isShooting: false,
   };
-};
-
-const getStars = () => {
-  const stars = [];
-  for (let x = 0; x < 120; x++) {
-    const size = randomInt(1, 3);
-    const gray = 90 + 40 * size;
-    stars.push({
-      y: randomInt(0, canvas.height),
-      x: randomInt(0, canvas.width),
-      size,
-      speed: size * 1,
-      color: {
-        red: gray,
-        green: gray,
-        blue: gray,
-        opacity: 255,
-      },
-    });
-  }
-  return stars;
-};
-
-const moveStar = (imageData: ImageData, star: Star) => {
-  star.x = star.x + star.speed;
-  if (star.x >= canvas.width) {
-    star.x = 0;
-    star.y = randomInt(0, canvas.width);
-  }
-
-  putPixel(imageData, star.x, star.y, star.color);
-  putPixel(imageData, star.x, star.y + 1, star.color);
-  putPixel(imageData, star.x + 1, star.y, star.color);
-  putPixel(imageData, star.x + 1, star.y + 1, star.color);
-  if (star.size > 1) {
-    putPixel(imageData, star.x, star.y + 2, star.color);
-    putPixel(imageData, star.x + 2, star.y, star.color);
-    putPixel(imageData, star.x + 2, star.y + 2, star.color);
-  }
-  if (star.size > 2) {
-    putPixel(imageData, star.x, star.y + 3, star.color);
-    putPixel(imageData, star.x + 3, star.y, star.color);
-    putPixel(imageData, star.x + 3, star.y + 3, star.color);
-  }
-};
-
-const putPixel = (imageData: ImageData, x: number, y: number, color: Color) => {
-  const i = (x + y * canvas.width) * 4;
-  imageData.data[i] = color.red;
-  imageData.data[i + 1] = color.green;
-  imageData.data[i + 2] = color.blue;
-  imageData.data[i + 3] = color.opacity;
 };
 
 const moveText = (context: CanvasRenderingContext2D, message: Message) => {
@@ -147,13 +94,15 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 canvas.style.background = "black";
 
-const stars = getStars();
 const message = getMessage();
 const cannon = getCannon(message.y);
 const shot = getShot(cannon.y);
 
 const invaders = ["github.svg", "gmail.svg", "linkedin.svg", "youtube.svg"].map(
   (name) => new Invader(name, randomInt(0, canvas.width), -100)
+);
+const stars = Array.from(Array(120).keys()).map(
+  (_) => new Star(canvas.width, canvas.height)
 );
 
 const context = canvas.getContext("2d");
@@ -174,7 +123,7 @@ const startTime = performance.now();
   // const elapsedTimeUnits = (timestamp - startTime);
   const imageData = context.createImageData(canvas.width, canvas.height);
 
-  stars.forEach((star) => moveStar(imageData, star));
+  stars.forEach((star) => star.move(imageData, canvas.width, canvas.height));
   context.putImageData(imageData, 0, 0);
 
   invaders.forEach((invader) => {
