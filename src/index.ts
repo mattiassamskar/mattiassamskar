@@ -109,7 +109,7 @@ const context = canvas.getContext("2d");
 context.font = "48px Arcade Classic";
 context.fillStyle = getGradient(message);
 
-document.onclick = () => {
+window.onclick = () => {
   if (shot.isShooting === true) return;
 
   shot.x = cannon.x + cannon.image.width / 6 - 5;
@@ -117,13 +117,20 @@ document.onclick = () => {
   audio.play();
 };
 
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
 const startTime = performance.now();
 
 (function draw(timestamp) {
   // const elapsedTimeUnits = (timestamp - startTime);
   const imageData = context.createImageData(canvas.width, canvas.height);
 
-  stars.forEach((star) => star.move(imageData, canvas.width, canvas.height));
+  stars.forEach((star) =>
+    star.move(imageData, canvas.width, canvas.height, canvas.width)
+  );
   context.putImageData(imageData, 0, 0);
 
   invaders.forEach((invader) => {

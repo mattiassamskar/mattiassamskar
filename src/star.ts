@@ -26,25 +26,25 @@ export class Star {
     };
   }
 
-  move(imageData: ImageData, xMax: number, yMax: number) {
+  move(imageData: ImageData, xMax: number, yMax: number, canvasWidth: number) {
     this.x = this.x + this.speed;
     if (this.x > xMax) {
       this.x = 0;
       this.y = randomInt(0, yMax);
     }
-    putPixel(imageData, this.x, this.y, this.color, xMax);
-    putPixel(imageData, this.x, this.y + 1, this.color, xMax);
-    putPixel(imageData, this.x + 1, this.y, this.color, xMax);
-    putPixel(imageData, this.x + 1, this.y + 1, this.color, xMax);
+    putPixel(imageData, this.x, this.y, this.color, canvasWidth);
+    putPixel(imageData, this.x, this.y + 1, this.color, canvasWidth);
+    putPixel(imageData, this.x + 1, this.y, this.color, canvasWidth);
+    putPixel(imageData, this.x + 1, this.y + 1, this.color, canvasWidth);
     if (this.size > 1) {
-      putPixel(imageData, this.x, this.y + 2, this.color, xMax);
-      putPixel(imageData, this.x + 2, this.y, this.color, xMax);
-      putPixel(imageData, this.x + 2, this.y + 2, this.color, xMax);
+      putPixel(imageData, this.x, this.y + 2, this.color, canvasWidth);
+      putPixel(imageData, this.x + 2, this.y, this.color, canvasWidth);
+      putPixel(imageData, this.x + 2, this.y + 2, this.color, canvasWidth);
     }
     if (this.size > 2) {
-      putPixel(imageData, this.x, this.y + 3, this.color, xMax);
-      putPixel(imageData, this.x + 3, this.y, this.color, xMax);
-      putPixel(imageData, this.x + 3, this.y + 3, this.color, xMax);
+      putPixel(imageData, this.x, this.y + 3, this.color, canvasWidth);
+      putPixel(imageData, this.x + 3, this.y, this.color, canvasWidth);
+      putPixel(imageData, this.x + 3, this.y + 3, this.color, canvasWidth);
     }
   }
 }
