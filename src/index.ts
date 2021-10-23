@@ -1,3 +1,4 @@
+import { couldStartTrivia } from "typescript";
 import { Invader } from "./invader";
 import { Star } from "./star";
 import { Cannon, Message, Shot } from "./types";
@@ -35,6 +36,7 @@ const getCannon = (bottomMargin: number): Cannon => {
 };
 
 const moveText = (context: CanvasRenderingContext2D, message: Message) => {
+  context.fillStyle = getGradient(message);
   context.fillText(message.text, message.x, message.y);
   const textWidth = context.measureText(message.text).width;
   message.x -= 4;
@@ -102,12 +104,11 @@ const invaders = ["github.svg", "gmail.svg", "linkedin.svg", "youtube.svg"].map(
   (name) => new Invader(name, randomInt(0, canvas.width), -100)
 );
 const stars = Array.from(Array(120).keys()).map(
-  (_) => new Star(canvas.width, canvas.height)
+  (_) => new Star(window.screen.width, window.screen.height)
 );
 
 const context = canvas.getContext("2d");
 context.font = "48px Arcade Classic";
-context.fillStyle = getGradient(message);
 
 window.onclick = () => {
   if (shot.isShooting === true) return;
@@ -126,12 +127,16 @@ const startTime = performance.now();
 
 (function draw(timestamp) {
   // const elapsedTimeUnits = (timestamp - startTime);
-  const imageData = context.createImageData(canvas.width, canvas.height);
 
-  stars.forEach((star) =>
-    star.move(imageData, canvas.width, canvas.height, canvas.width)
-  );
-  context.putImageData(imageData, 0, 0);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  stars.forEach((star) => {
+    context.beginPath();
+    context.arc(star.x, star.y, star.size * 0.75, 0, Math.PI * 2);
+    context.fillStyle = star.color;
+    context.fill();
+    star.move(window.screen.width, window.screen.height);
+  });
 
   invaders.forEach((invader) => {
     context.drawImage(
