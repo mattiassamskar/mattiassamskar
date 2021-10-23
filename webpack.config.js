@@ -28,12 +28,7 @@ module.exports = {
       template: "./src/index.html",
     }),
     new CopyPlugin({
-      patterns: [
-        { from: "*.svg", context: "src" },
-        { from: "*.ttf", context: "src" },
-        { from: "*.wav", context: "src" },
-        { from: "favicon.ico", context: "src" },
-      ],
+      patterns: [{ from: "*.*", context: "src/resources" }],
     }),
   ],
   devServer: {
