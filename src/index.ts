@@ -1,3 +1,4 @@
+import { Invader } from "./invader";
 import { Cannon, Color, Enemy, Message, Shot, Star } from "./types";
 
 const randomInt = (min: number, max: number) =>
@@ -53,25 +54,6 @@ const getStars = () => {
     });
   }
   return stars;
-};
-
-const getEnemies = (): Enemy[] => {
-  return ["github.svg", "gmail.svg", "linkedin.svg", "youtube.svg"].map(
-    (name) => {
-      const image = new Image();
-      image.src = name;
-
-      return {
-        name,
-        image,
-        x: randomInt(0, canvas.width - image.width),
-        y: randomInt(0, canvas.height / 2),
-        xd: randomInt(0, 1),
-        yd: randomInt(0, 1),
-        timeout: randomInt(1, 10),
-      };
-    }
-  );
 };
 
 const moveStar = (imageData: ImageData, star: Star) => {
@@ -140,37 +122,6 @@ const moveShot = (context: CanvasRenderingContext2D, shot: Shot) => {
   }
 };
 
-const moveEnemy = (context: CanvasRenderingContext2D, enemy: Enemy) => {
-  context.drawImage(enemy.image, enemy.x, enemy.y, 49 * 1.5, 42 * 1.5);
-  enemy.timeout--;
-  if (enemy.timeout > 0) return;
-
-  if (randomInt(0, 100) > 90) {
-    enemy.xd = enemy.xd === 0 ? 1 : 0;
-  }
-  if (randomInt(0, 100) > 95) {
-    enemy.yd = enemy.yd === 0 ? 1 : 0;
-  }
-
-  enemy.timeout = 20;
-  enemy.x = enemy.xd === 0 ? enemy.x - 15 : enemy.x + 15;
-  enemy.y = enemy.yd === 0 ? enemy.y - 6 : enemy.y + 6;
-  if (enemy.x + enemy.image.width >= canvas.width) {
-    enemy.x = canvas.width - enemy.image.width;
-    enemy.xd = 0;
-  }
-  if (enemy.x <= 0) {
-    enemy.x = 0;
-    enemy.xd = 1;
-  }
-  if (enemy.y > canvas.height / 2) {
-    enemy.yd = 0;
-  }
-  if (enemy.y <= 0) {
-    enemy.yd = 1;
-  }
-};
-
 const getGradient = (message: Message) => {
   const gradient = context.createRadialGradient(
     canvas.width * 0.3,
@@ -197,10 +148,13 @@ canvas.height = window.innerHeight;
 canvas.style.background = "black";
 
 const stars = getStars();
-const enemies = getEnemies();
 const message = getMessage();
 const cannon = getCannon(message.y);
 const shot = getShot(cannon.y);
+
+const invaders = ["github.svg", "gmail.svg", "linkedin.svg", "youtube.svg"].map(
+  (name) => new Invader(name, randomInt(0, canvas.width), -100)
+);
 
 const context = canvas.getContext("2d");
 context.font = "48px Arcade Classic";
@@ -223,7 +177,16 @@ const startTime = performance.now();
   stars.forEach((star) => moveStar(imageData, star));
   context.putImageData(imageData, 0, 0);
 
-  enemies.forEach((enemy) => moveEnemy(context, enemy));
+  invaders.forEach((invader) => {
+    context.drawImage(
+      invader.image,
+      invader.left,
+      invader.top,
+      invader.width,
+      invader.height
+    );
+    invader.move(canvas.width, canvas.height / 2);
+  });
   moveCannon(context, cannon);
   moveText(context, message);
   moveShot(context, shot);
