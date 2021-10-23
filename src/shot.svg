@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="194.356 123.188 23.665 117.886" width="23.665" height="117.886" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="gradient-1-0" gradientUnits="userSpaceOnUse" x1="-206.188" y1="-241.074" x2="-206.188" y2="-105.845" gradientTransform="matrix(1, 0, 0, 0.871749, 0, -30.918034)" xlink:href="#gradient-1"/>
+    <linearGradient id="gradient-1">
+      <stop offset="0.128" style="stop-color: rgb(255, 251, 0);"/>
+      <stop offset="1" style="stop-color: rgb(255, 0, 0);"/>
+    </linearGradient>
+    <filter id="motion-blur-filter-0" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%">
+      <feGaussianBlur stdDeviation="1 0" edgeMode="none"/>
+    </filter>
+  </defs>
+  <rect x="-218.021" y="-241.074" width="23.665" height="117.886" style="paint-order: fill; fill: url(#gradient-1-0); filter: url(#motion-blur-filter-0); mix-blend-mode: darken;" rx="8.599" ry="8.599" transform="matrix(-1, 0, 0, -1, 0, 0)"/>
+</svg>

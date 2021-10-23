@@ -1,24 +1,49 @@
-import { Color, Enemy, Message, Star } from "./types";
+import { Cannon, Color, Enemy, Message, Shot, Star } from "./types";
 
 const randomInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
 const getMessage = (): Message => ({
-  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer viverra mollis tortor, at egestas magna finibus consectetur. Aenean rutrum mi vitae pretium placerat. Nullam auctor sapien et purus sollicitudin, quis molestie lectus bibendum. Suspendisse auctor purus quis accumsan gravida. Proin ultricies lacinia neque. Nullam et feugiat dui, et vulputate enim. Etiam malesuada varius felis, eu interdum nibh ullamcorper eu.",
+  text: "Welcome to my version of Space Invaders - click or tap screen to fire",
   x: canvas.width,
-  y: canvas.height - 50,
+  y: canvas.height - 10,
 });
+
+const getShot = (y: number): Shot => {
+  const image = new Image();
+  image.src = "shot.svg";
+
+  return {
+    image,
+    x: 0,
+    y: y - image.height + 70,
+    isShooting: false,
+  };
+};
+
+const getCannon = (bottomMargin: number): Cannon => {
+  const image = new Image();
+  image.src = "cannon.svg";
+
+  return {
+    image,
+    x: canvas.width / 3,
+    y: bottomMargin - 120,
+    direction: "right",
+    isShooting: false,
+  };
+};
 
 const getStars = () => {
   const stars = [];
   for (let x = 0; x < 120; x++) {
     const size = randomInt(1, 3);
-    const gray = 127 + 40 * size;
+    const gray = 90 + 40 * size;
     stars.push({
       y: randomInt(0, canvas.height),
       x: randomInt(0, canvas.width),
       size,
-      speed: size * 1.5,
+      speed: size * 1,
       color: {
         red: gray,
         green: gray,
@@ -89,6 +114,32 @@ const moveText = (context: CanvasRenderingContext2D, message: Message) => {
   }
 };
 
+const moveCannon = (context: CanvasRenderingContext2D, cannon: Cannon) => {
+  context.drawImage(cannon.image, cannon.x, cannon.y, 225 / 3, 146 / 3);
+
+  cannon.x = cannon.direction === "left" ? cannon.x - 5 : cannon.x + 5;
+  if (cannon.x <= 50) {
+    cannon.x = 50;
+    cannon.direction = "right";
+  }
+  if (cannon.x >= canvas.width - 225 / 3 - 50) {
+    cannon.x = canvas.width - 225 / 3 - 50;
+    cannon.direction = "left";
+  }
+};
+
+const moveShot = (context: CanvasRenderingContext2D, shot: Shot) => {
+  if (!shot.isShooting) return;
+
+  context.drawImage(shot.image, shot.x, shot.y, 25 - 16, 120 - 70);
+
+  shot.y -= 12;
+  if (shot.y <= 0) {
+    shot.y = cannon.y - shot.image.height + 70;
+    shot.isShooting = false;
+  }
+};
+
 const moveEnemy = (context: CanvasRenderingContext2D, enemy: Enemy) => {
   context.drawImage(enemy.image, enemy.x, enemy.y, 49 * 1.5, 42 * 1.5);
   enemy.timeout--;
@@ -101,8 +152,8 @@ const moveEnemy = (context: CanvasRenderingContext2D, enemy: Enemy) => {
     enemy.yd = enemy.yd === 0 ? 1 : 0;
   }
 
-  enemy.timeout = 15;
-  enemy.x = enemy.xd === 0 ? enemy.x - 12 : enemy.x + 12;
+  enemy.timeout = 20;
+  enemy.x = enemy.xd === 0 ? enemy.x - 15 : enemy.x + 15;
   enemy.y = enemy.yd === 0 ? enemy.y - 6 : enemy.y + 6;
   if (enemy.x + enemy.image.width >= canvas.width) {
     enemy.x = canvas.width - enemy.image.width;
@@ -139,6 +190,7 @@ const getGradient = (message: Message) => {
   return gradient;
 };
 
+const audio = new Audio("shot.wav");
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -147,10 +199,20 @@ canvas.style.background = "black";
 const stars = getStars();
 const enemies = getEnemies();
 const message = getMessage();
+const cannon = getCannon(message.y);
+const shot = getShot(cannon.y);
 
 const context = canvas.getContext("2d");
 context.font = "48px Arcade Classic";
 context.fillStyle = getGradient(message);
+
+document.onclick = () => {
+  if (shot.isShooting === true) return;
+
+  shot.x = cannon.x + cannon.image.width / 6 - 5;
+  shot.isShooting = true;
+  audio.play();
+};
 
 const startTime = performance.now();
 
@@ -162,7 +224,9 @@ const startTime = performance.now();
   context.putImageData(imageData, 0, 0);
 
   enemies.forEach((enemy) => moveEnemy(context, enemy));
+  moveCannon(context, cannon);
   moveText(context, message);
+  moveShot(context, shot);
 
   requestAnimationFrame(draw);
 })(startTime);

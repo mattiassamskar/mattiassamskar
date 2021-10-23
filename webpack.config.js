@@ -31,6 +31,7 @@ module.exports = {
       patterns: [
         { from: "*.svg", context: "src" },
         { from: "*.ttf", context: "src" },
+        { from: "*.wav", context: "src" },
         { from: "favicon.ico", context: "src" },
       ],
     }),
