@@ -24,6 +24,10 @@ export class Cannon {
     return this.top + this.height;
   }
 
+  get middle() {
+    return this.left + this.width / 2;
+  }
+
   move(xMax: number) {
     this.left = this.direction === "left" ? this.left - 5 : this.left + 5;
     if (this.left <= 50) {
