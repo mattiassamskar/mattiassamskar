@@ -117,6 +117,7 @@ window.onclick = () => {
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  context.font = "48px Arcade Classic";
 });
 
 const startTime = performance.now();
