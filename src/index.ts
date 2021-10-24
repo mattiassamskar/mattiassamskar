@@ -1,7 +1,8 @@
+import { Cannon } from "./cannon";
 import { Invader } from "./invader";
 import { Message } from "./message";
 import { Star } from "./star";
-import { Cannon, Shot } from "./types";
+import { Shot } from "./types";
 import { randomInt } from "./utils";
 
 const getShot = (y: number): Shot => {
@@ -16,43 +17,6 @@ const getShot = (y: number): Shot => {
   };
 };
 
-const getCannon = (bottomMargin: number): Cannon => {
-  const image = new Image();
-  image.src = "cannon.svg";
-
-  return {
-    image,
-    x: canvas.width / 3,
-    y: bottomMargin - 120,
-    direction: "right",
-    isShooting: false,
-  };
-};
-
-// const moveText = (context: CanvasRenderingContext2D, message: Message) => {
-//   context.fillStyle = getGradient(message);
-//   context.fillText(message.text, message.x, message.y);
-//   const textWidth = context.measureText(message.text).width;
-//   message.x -= 4;
-//   if (message.x + textWidth < 0) {
-//     message.x = canvas.width;
-//   }
-// };
-
-const moveCannon = (context: CanvasRenderingContext2D, cannon: Cannon) => {
-  context.drawImage(cannon.image, cannon.x, cannon.y, 225 / 3, 146 / 3);
-
-  cannon.x = cannon.direction === "left" ? cannon.x - 5 : cannon.x + 5;
-  if (cannon.x <= 50) {
-    cannon.x = 50;
-    cannon.direction = "right";
-  }
-  if (cannon.x >= canvas.width - 225 / 3 - 50) {
-    cannon.x = canvas.width - 225 / 3 - 50;
-    cannon.direction = "left";
-  }
-};
-
 const moveShot = (context: CanvasRenderingContext2D, shot: Shot) => {
   if (!shot.isShooting) return;
 
@@ -60,7 +24,7 @@ const moveShot = (context: CanvasRenderingContext2D, shot: Shot) => {
 
   shot.y -= 12;
   if (shot.y <= 0) {
-    shot.y = cannon.y - shot.image.height + 70;
+    shot.y = cannon.left - shot.image.height + 70;
     shot.isShooting = false;
   }
 };
@@ -102,14 +66,14 @@ const stars = Array.from(Array(120).keys()).map(
 
 const message = new Message(canvas.width, canvas.height - 20, getGradient());
 message.width = context.measureText(message.text).width;
+const cannon = new Cannon("cannon.svg", canvas.width / 3, canvas.height - 130);
 
-const cannon = getCannon(message.y);
-const shot = getShot(cannon.y);
+const shot = getShot(cannon.left);
 
 window.onclick = () => {
   if (shot.isShooting === true) return;
 
-  shot.x = cannon.x + cannon.image.width / 6 - 5;
+  shot.x = cannon.left + cannon.image.width / 6 - 5;
   shot.isShooting = true;
   audio.play();
 };
@@ -145,7 +109,15 @@ const startTime = performance.now();
     );
     invader.move(canvas.width, canvas.height / 2);
   });
-  moveCannon(context, cannon);
+
+  context.drawImage(
+    cannon.image,
+    cannon.left,
+    cannon.top,
+    cannon.width,
+    cannon.height
+  );
+  cannon.move(canvas.width);
 
   context.fillStyle = message.gradient;
   context.fillText(message.text, message.x, message.y);
