@@ -1,14 +1,8 @@
-import { couldStartTrivia } from "typescript";
 import { Invader } from "./invader";
+import { Message } from "./message";
 import { Star } from "./star";
-import { Cannon, Message, Shot } from "./types";
+import { Cannon, Shot } from "./types";
 import { randomInt } from "./utils";
-
-const getMessage = (): Message => ({
-  text: "Welcome to my version of Space Invaders - click or tap screen to fire",
-  x: canvas.width,
-  y: canvas.height - 10,
-});
 
 const getShot = (y: number): Shot => {
   const image = new Image();
@@ -35,15 +29,15 @@ const getCannon = (bottomMargin: number): Cannon => {
   };
 };
 
-const moveText = (context: CanvasRenderingContext2D, message: Message) => {
-  context.fillStyle = getGradient(message);
-  context.fillText(message.text, message.x, message.y);
-  const textWidth = context.measureText(message.text).width;
-  message.x -= 4;
-  if (message.x + textWidth < 0) {
-    message.x = canvas.width;
-  }
-};
+// const moveText = (context: CanvasRenderingContext2D, message: Message) => {
+//   context.fillStyle = getGradient(message);
+//   context.fillText(message.text, message.x, message.y);
+//   const textWidth = context.measureText(message.text).width;
+//   message.x -= 4;
+//   if (message.x + textWidth < 0) {
+//     message.x = canvas.width;
+//   }
+// };
 
 const moveCannon = (context: CanvasRenderingContext2D, cannon: Cannon) => {
   context.drawImage(cannon.image, cannon.x, cannon.y, 225 / 3, 146 / 3);
@@ -71,13 +65,13 @@ const moveShot = (context: CanvasRenderingContext2D, shot: Shot) => {
   }
 };
 
-const getGradient = (message: Message) => {
+const getGradient = () => {
   const gradient = context.createRadialGradient(
     canvas.width * 0.3,
-    message.y,
+    canvas.height,
     30,
     canvas.width * 0.8,
-    message.y,
+    canvas.height,
     canvas.width
   );
   gradient.addColorStop(0, "orange");
@@ -96,9 +90,8 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 canvas.style.background = "black";
 
-const message = getMessage();
-const cannon = getCannon(message.y);
-const shot = getShot(cannon.y);
+const context = canvas.getContext("2d");
+context.font = "48px Arcade Classic";
 
 const invaders = ["github.svg", "gmail.svg", "linkedin.svg", "youtube.svg"].map(
   (name) => new Invader(name, randomInt(0, canvas.width), -100)
@@ -107,8 +100,11 @@ const stars = Array.from(Array(120).keys()).map(
   (_) => new Star(window.screen.width, window.screen.height)
 );
 
-const context = canvas.getContext("2d");
-context.font = "48px Arcade Classic";
+const message = new Message(canvas.width, canvas.height - 20, getGradient());
+message.width = context.measureText(message.text).width;
+
+const cannon = getCannon(message.y);
+const shot = getShot(cannon.y);
 
 window.onclick = () => {
   if (shot.isShooting === true) return;
@@ -149,7 +145,11 @@ const startTime = performance.now();
     invader.move(canvas.width, canvas.height / 2);
   });
   moveCannon(context, cannon);
-  moveText(context, message);
+
+  context.fillStyle = message.gradient;
+  context.fillText(message.text, message.x, message.y);
+  message.move(canvas.width);
+
   moveShot(context, shot);
 
   requestAnimationFrame(draw);

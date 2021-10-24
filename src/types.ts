@@ -1,9 +1,3 @@
-export interface Message {
-  text: string;
-  x: number;
-  y: number;
-}
-
 export interface Cannon {
   image: HTMLImageElement;
   x: number;
