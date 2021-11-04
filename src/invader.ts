@@ -1,7 +1,8 @@
-import { randomInt } from "./utils";
+import { GameImage, randomInt } from "./utils";
 
-export class Invader {
+export class Invader implements GameImage {
   readonly name: string;
+  readonly url: string;
   readonly width: number;
   readonly height: number;
   left: number;
@@ -13,8 +14,9 @@ export class Invader {
   ySpeed: number;
   timeout: number;
 
-  constructor(name: string, x: number, y: number) {
+  constructor(name: string, url: string, x: number, y: number) {
     this.name = name;
+    this.url = url;
     this.left = x;
     this.top = y;
     this.width = 74;

@@ -1,6 +1,9 @@
-export class Shot {
+import { GameImage } from "./utils";
+
+export class Shot implements GameImage {
   image: HTMLImageElement;
   audio: HTMLAudioElement;
+  readonly name: string;
   readonly width: number;
   readonly height: number;
   left: number;
@@ -8,6 +11,7 @@ export class Shot {
   isVisible: boolean;
 
   constructor(name: string, audioName: string, x: number, y: number) {
+    this.name = "shot";
     this.left = x;
     this.top = y;
     this.width = 9;

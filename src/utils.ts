@@ -23,3 +23,23 @@ export const getGradient = (
 
   return gradient;
 };
+
+export interface GameImage {
+  name: string;
+  left: number;
+  top: number;
+  bottom: number;
+  right: number;
+}
+
+export const detectCollision = (a: GameImage, b: GameImage) => {
+  if (
+    a.right > b.left &&
+    a.left < b.right &&
+    a.top < b.bottom &&
+    a.bottom > b.top
+  ) {
+    return true;
+  }
+  return false;
+};

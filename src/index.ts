@@ -3,7 +3,7 @@ import { Invader } from "./invader";
 import { Message } from "./message";
 import { Shot } from "./shot";
 import { Star } from "./star";
-import { getGradient, randomInt } from "./utils";
+import { detectCollision, getGradient, randomInt } from "./utils";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 canvas.width = window.innerWidth;
@@ -12,11 +12,34 @@ canvas.height = window.innerHeight;
 const context = canvas.getContext("2d");
 context.font = "48px Arcade Classic";
 
-const invaders = ["github.svg", "gmail.svg", "linkedin.svg", "youtube.svg"].map(
-  (name) => new Invader(name, randomInt(0, canvas.width), -100)
-);
+const invaders = [
+  new Invader(
+    "github.svg",
+    "https://www.github.com/mattiassamskar",
+    randomInt(0, canvas.width),
+    -100
+  ),
+  new Invader(
+    "gmail.svg",
+    "mailto:mattias.samskar@gmail.com",
+    randomInt(0, canvas.width),
+    -100
+  ),
+  new Invader(
+    "linkedin.svg",
+    "https://www.linkedin.com/in/mattiassamskar/",
+    randomInt(0, canvas.width),
+    -100
+  ),
+  new Invader(
+    "youtube.svg",
+    "https://www.youtube.com/channel/UCpLdQ69TRVNUtxdssKbT8aQ",
+    randomInt(0, canvas.width),
+    -100
+  ),
+];
 
-const stars = Array.from(Array(120).keys()).map(
+const stars = Array.from(Array(100).keys()).map(
   (_) => new Star(window.screen.width, window.screen.height)
 );
 
@@ -35,7 +58,6 @@ window.onclick = () => {
   shot.left = cannon.middle - shot.width / 2;
   shot.top = cannon.top - shot.height + 10;
   shot.isVisible = true;
-  console.log(shot);
   shot.audio.play();
 };
 
@@ -54,10 +76,13 @@ const startTime = performance.now();
 
   stars.forEach((star) => {
     context.beginPath();
-    context.arc(star.x, star.y, star.size * 0.75, 0, Math.PI * 2);
+    context.arc(star.x, star.y, star.size * 0.6, 0, Math.PI * 2);
     context.fillStyle = star.color;
     context.fill();
-    star.move(window.screen.width, window.screen.height);
+    star.move(
+      Math.max(window.screen.width, window.screen.height),
+      Math.max(window.screen.width, window.screen.height)
+    );
   });
 
   invaders.forEach((invader) => {
@@ -88,6 +113,13 @@ const startTime = performance.now();
   context.fillStyle = message.gradient;
   context.fillText(message.text, message.x, message.y);
   message.move(canvas.width);
+
+  invaders.forEach((invader) => {
+    if (shot.isVisible && detectCollision(invader, shot)) {
+      shot.isVisible = false;
+      window.open(invader.url, "_blank");
+    }
+  });
 
   requestAnimationFrame(draw);
 })(startTime);

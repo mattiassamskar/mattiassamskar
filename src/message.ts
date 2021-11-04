@@ -14,7 +14,7 @@ export class Message {
   }
 
   move(xMax: number) {
-    this.x -= 4;
+    this.x -= 3;
     if (this.x + this.width < 0) {
       this.x = xMax;
     }

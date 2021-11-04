@@ -10,7 +10,7 @@ export class Cannon {
     this.left = x;
     this.top = y;
     this.width = 75;
-    this.height = 63;
+    this.height = 49;
     this.image = new Image(this.width, this.height);
     this.image.src = name;
     this.direction = "right";
