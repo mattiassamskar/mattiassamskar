@@ -68,12 +68,10 @@ window.addEventListener("resize", () => {
   context.font = "48px Arcade Classic";
 });
 
-let secondsPassed = 0;
 let oldTimeStamp = 0;
-const startTime = performance.now();
 
-(function draw(timeStamp) {
-  secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+const draw = (timeStamp: number) => {
+  const secondsPassed = (timeStamp - oldTimeStamp) / 1000;
   oldTimeStamp = timeStamp;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -127,4 +125,6 @@ const startTime = performance.now();
   });
 
   requestAnimationFrame(draw);
-})(startTime);
+};
+
+draw(performance.now());
