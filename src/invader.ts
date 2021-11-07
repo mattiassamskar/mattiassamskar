@@ -21,8 +21,8 @@ export class Invader implements GameImage {
     this.top = y;
     this.width = 74;
     this.height = 63;
-    this.xSpeed = 15;
-    this.ySpeed = 6;
+    this.xSpeed = 500;
+    this.ySpeed = 250;
     this.image = new Image(this.width, this.height);
     this.image.src = name;
     this.xDirection = "right";
@@ -44,8 +44,10 @@ export class Invader implements GameImage {
   private toggleYDirection = () =>
     (this.yDirection = this.yDirection === "up" ? "down" : "up");
 
-  move(xMax: number, yMax: number) {
+  move(xMax: number, yMax: number, secondsPassed: number) {
     if (this.timeout-- > 0) return;
+    const deltaX = this.xSpeed * secondsPassed;
+    const deltaY = this.ySpeed * secondsPassed;
 
     this.xDirection =
       this.left < 0
@@ -66,13 +68,8 @@ export class Invader implements GameImage {
         : this.yDirection;
 
     this.left =
-      this.xDirection === "left"
-        ? this.left - this.xSpeed
-        : this.left + this.xSpeed;
-    this.top =
-      this.yDirection === "up"
-        ? this.top - this.ySpeed
-        : this.top + this.ySpeed;
+      this.xDirection === "left" ? this.left - deltaX : this.left + deltaX;
+    this.top = this.yDirection === "up" ? this.top - deltaY : this.top + deltaY;
 
     this.timeout = 20;
   }

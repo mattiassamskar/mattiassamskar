@@ -28,8 +28,10 @@ export class Cannon {
     return this.left + this.width / 2;
   }
 
-  move(xMax: number) {
-    this.left = this.direction === "left" ? this.left - 5 : this.left + 5;
+  move(xMax: number, secondsPassed: number) {
+    const delta = 300 * secondsPassed;
+    this.left =
+      this.direction === "left" ? this.left - delta : this.left + delta;
     if (this.left <= 50) {
       this.direction = "right";
     }

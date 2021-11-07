@@ -31,8 +31,8 @@ export class Shot implements GameImage {
     return this.top + this.height;
   }
 
-  move() {
-    this.top -= 12;
+  move(secondsPassed: number) {
+    this.top -= 700 * secondsPassed;
     if (this.bottom < 0) {
       this.isVisible = false;
     }

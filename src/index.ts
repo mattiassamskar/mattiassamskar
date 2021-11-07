@@ -68,25 +68,30 @@ window.addEventListener("resize", () => {
   context.font = "48px Arcade Classic";
 });
 
+let secondsPassed = 0;
+let oldTimeStamp = 0;
 const startTime = performance.now();
 
-(function draw(timestamp) {
-  // const elapsedTimeUnits = (timestamp - startTime);
+(function draw(timeStamp) {
+  secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+  oldTimeStamp = timeStamp;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   stars.forEach((star) => {
+    star.move(
+      Math.max(window.screen.width, window.screen.height),
+      Math.max(window.screen.width, window.screen.height),
+      secondsPassed
+    );
     context.beginPath();
     context.arc(star.x, star.y, star.size * 0.6, 0, Math.PI * 2);
     context.fillStyle = star.color;
     context.fill();
-    star.move(
-      Math.max(window.screen.width, window.screen.height),
-      Math.max(window.screen.width, window.screen.height)
-    );
   });
 
   invaders.forEach((invader) => {
+    invader.move(canvas.width, canvas.height / 2, secondsPassed);
     context.drawImage(
       invader.image,
       invader.left,
@@ -94,9 +99,9 @@ const startTime = performance.now();
       invader.width,
       invader.height
     );
-    invader.move(canvas.width, canvas.height / 2);
   });
 
+  cannon.move(canvas.width, secondsPassed);
   context.drawImage(
     cannon.image,
     cannon.left,
@@ -104,16 +109,15 @@ const startTime = performance.now();
     cannon.width,
     cannon.height
   );
-  cannon.move(canvas.width);
 
   if (shot.isVisible) {
+    shot.move(secondsPassed);
     context.drawImage(shot.image, shot.left, shot.top, shot.width, shot.height);
-    shot.move();
   }
 
+  message.move(canvas.width, secondsPassed);
   context.fillStyle = message.gradient;
   context.fillText(message.text, message.x, message.y);
-  message.move(canvas.width);
 
   invaders.forEach((invader) => {
     if (shot.isVisible && detectCollision(invader, shot)) {

@@ -13,9 +13,9 @@ export class Message {
       "Welcome to my version of Space Invaders - click or tap screen to fire";
   }
 
-  move(xMax: number) {
-    this.x -= 3;
-    if (this.x + this.width < 0) {
+  move(xMax: number, secondsPassed: number) {
+    this.x -= 250 * secondsPassed;
+    if (this.x + this.width < -1000) {
       this.x = xMax;
     }
   }
