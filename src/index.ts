@@ -54,7 +54,8 @@ const cannon = new Cannon("cannon.svg", canvas.width / 3, canvas.height - 130);
 
 const shot = new Shot("shot.svg", "shot.wav", 0, 0);
 
-window.onclick = () => {
+canvas.onclick = () => {
+  if (shot.isVisible) return;
   shot.left = cannon.middle - shot.width / 2;
   shot.top = cannon.top - shot.height + 10;
   shot.isVisible = true;
