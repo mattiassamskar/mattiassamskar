@@ -89,6 +89,9 @@ const draw = (timeStamp: number) => {
   });
 
   invaders.forEach((invader) => {
+    if (!invader.isAlive) {
+      return;
+    }
     invader.move(canvas.width, canvas.height / 2, secondsPassed);
     context.drawImage(
       invader.image,
@@ -115,12 +118,23 @@ const draw = (timeStamp: number) => {
 
   message.move(canvas.width, secondsPassed);
   context.fillStyle = message.gradient;
+  context.font = "48px Arcade Classic";
   context.fillText(message.text, message.x, message.y);
 
   invaders.forEach((invader) => {
-    if (shot.isVisible && detectCollision(invader, shot)) {
+    if (shot.isVisible && invader.isAlive && detectCollision(invader, shot)) {
       shot.isVisible = false;
-      window.open(invader.url, "_blank");
+      invader.isAlive = false;
+
+      const rootElement = document.getElementById("root");
+      const linkElement = document.createElement("a");
+      linkElement.href = invader.url;
+      var text = document.createTextNode(invader.url);
+      linkElement.appendChild(text);
+      linkElement.style.position = "absolute";
+      linkElement.style.top = invader.bottom + "px";
+      linkElement.style.left = invader.left + "px";
+      rootElement.appendChild(linkElement);
     }
   });
 

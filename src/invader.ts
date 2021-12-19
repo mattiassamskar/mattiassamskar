@@ -13,6 +13,7 @@ export class Invader implements GameImage {
   xSpeed: number;
   ySpeed: number;
   timeout: number;
+  isAlive: boolean;
 
   constructor(name: string, url: string, x: number, y: number) {
     this.name = name;
@@ -28,6 +29,7 @@ export class Invader implements GameImage {
     this.xDirection = "right";
     this.yDirection = "down";
     this.timeout = randomInt(1, 20);
+    this.isAlive = true;
   }
 
   get right() {
