@@ -1,0 +1,25 @@
+{
+  "name": "mattiassamskar.se",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "webpack serve",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "copy-webpack-plugin": "^9.0.1",
+    "html-webpack-plugin": "^5.4.0",
+    "ts-loader": "^9.2.6",
+    "webpack": "^5.59.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.3.1"
+  },
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "typescript": "^4.4.4"
+  }
+}
