@@ -44,7 +44,7 @@ const stars = Array.from(Array(100).keys()).map(
 );
 
 const message = new Message(
-  canvas.width,
+  canvas.width + 500,
   canvas.height - 20,
   getGradient(context, canvas.width, canvas.height)
 );
