@@ -50,7 +50,7 @@ const message = new Message(
 );
 message.width = context.measureText(message.text).width;
 
-const cannon = new Cannon("cannon.svg", canvas.width / 3, canvas.height - 130);
+const cannon = new Cannon("cannon.svg", -500, canvas.height - 130);
 
 const shot = new Shot("shot.svg", "shot.wav", 0, 0);
 
