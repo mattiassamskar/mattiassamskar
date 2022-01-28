@@ -1,5 +1,7 @@
 import { randomInt } from "./utils";
 
+const colors = ["#EEEEEE", "#CCCCCC", "#AAAAAA"];
+
 export class Star {
   x: number;
   y: number;
@@ -12,7 +14,7 @@ export class Star {
     this.y = randomInt(0, yMax);
     this.size = randomInt(1, 3);
     this.speed = this.size * 40;
-    this.color = "#DDDDDD";
+    this.color = colors[this.size - 1];
   }
 
   move(xMax: number, yMax: number, secondsPassed: number) {
