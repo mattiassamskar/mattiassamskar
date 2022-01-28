@@ -39,18 +39,21 @@ const invaders = [
   ),
 ];
 
+const getMessageYPosition = () => canvas.height - 20;
+const getCannonYPosition = () => canvas.height - 130;
+
 const stars = Array.from(Array(100).keys()).map(
   (_) => new Star(window.screen.width, window.screen.height)
 );
 
 const message = new Message(
   canvas.width + 500,
-  canvas.height - 20,
+  getMessageYPosition(),
   getGradient(context, canvas.width, canvas.height)
 );
 message.width = context.measureText(message.text).width;
 
-const cannon = new Cannon("cannon.svg", -500, canvas.height - 130);
+const cannon = new Cannon("cannon.svg", -500, getCannonYPosition());
 
 const shot = new Shot("shot.svg", "shot.wav", 0, 0);
 
@@ -65,6 +68,8 @@ canvas.onclick = () => {
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  message.y = getMessageYPosition();
+  cannon.top = getCannonYPosition();
   context.font = "48px Arcade Classic";
 });
 
