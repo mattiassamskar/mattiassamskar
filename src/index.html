@@ -17,11 +17,22 @@
 
     body {
       margin: 0;
+      overflow: hidden;
       font-family: "Arcade Classic";
+      animation: fadeIn 1s forwards 1s;
+      opacity: 0;
     }
 
-    canvas {
-      background: black;
+    @keyframes fadeIn {
+      0% {
+        background: white;
+        opacity: 0;
+      }
+
+      100% {
+        background: black;
+        opacity: 1;
+      }
     }
   </style>
 </head>
