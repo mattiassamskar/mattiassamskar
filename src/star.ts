@@ -20,7 +20,7 @@ export class Star {
   move(xMax: number, yMax: number, secondsPassed: number) {
     this.x = this.x + this.speed * secondsPassed;
     if (this.x > xMax) {
-      this.x = 0;
+      this.x = -randomInt(0, xMax);
       this.y = randomInt(0, yMax);
     }
   }
