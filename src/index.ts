@@ -56,13 +56,14 @@ message.width = context.measureText(message.text).width;
 const cannon = new Cannon("cannon.svg", -500, getCannonYPosition());
 
 const shot = new Shot("shot.svg", "shot.wav", 0, 0);
+shot.init();
 
 canvas.onclick = () => {
   if (shot.isVisible) return;
   shot.left = cannon.middle - shot.width / 2;
   shot.top = cannon.top - shot.height + 10;
   shot.isVisible = true;
-  shot.audio.play();
+  shot.playSound();
 };
 
 window.addEventListener("resize", () => {
