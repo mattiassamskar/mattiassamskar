@@ -1,48 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href="https://www.mattiassamskar.dev/" />
+    <link rel="shortcut icon" type="image/jpg" href="favicon.ico" />
+    <meta
+      name="description"
+      content="Play Space Invaders on my arcade portfolio and win my contact details. Challenge accepted?"
+    />
+    <title>Mattias Sämskar</title>
+    <style>
+      @font-face {
+        font-family: "Arcade Classic";
+        src: url("Arcade Classic.woff2");
+        font-display: swap;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="canonical" href="https://www.mattiassamskar.dev/" />
-  <link rel="shortcut icon" type="image/jpg" href="favicon.ico" />
-  <meta name="description"
-    content="Play Space Invaders on my arcade portfolio and win my contact details. Challenge accepted?" />
-  <title>Mattias Sämskar</title>
-  <style>
-    @font-face {
-      font-family: "Arcade Classic";
-      src: url("Arcade Classic.woff2");
-      font-display: swap;
-    }
-
-    body {
-      margin: 0;
-      overflow: hidden;
-      font-family: "Arcade Classic";
-      animation: fadeIn 1s forwards 1s;
-      opacity: 0;
-    }
-
-    @keyframes fadeIn {
-      0% {
-        background: white;
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: "Arcade Classic";
+        animation: fadeIn 1s forwards 1s;
         opacity: 0;
       }
 
-      100% {
-        background: black;
-        opacity: 1;
+      @keyframes fadeIn {
+        0% {
+          background: white;
+          opacity: 0.001;
+        }
+
+        100% {
+          background: black;
+          opacity: 1;
+        }
       }
-    }
-  </style>
-</head>
+    </style>
+  </head>
 
-<body>
-  <div id="root">
-    <canvas id="canvas"></canvas>
-  </div>
-</body>
-
+  <body>
+    <div id="root">
+      <canvas id="canvas"></canvas>
+    </div>
+  </body>
 </html>
